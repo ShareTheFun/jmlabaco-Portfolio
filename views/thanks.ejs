@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sweet Valentine Confession</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe6e6, #ffb3ba);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3);
+            max-width: 90%;
+            width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ff4d6d;
+            margin-bottom: 20px;
+            word-wrap: break-word;
+            letter-spacing: 1px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #c9184a;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 30px;
+            background-color: #ff4d6d;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            animation: fadeIn 2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-home:hover {
+            background-color: #c9184a;
+            transform: scale(1.05);
+        }
+
+        .back-home::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover::after {
+            left: 100%;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            user-select: none;
+            animation: fall linear;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1rem;
+            color: #ff758f;
+            margin-top: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: #ffb3ba;
+            animation: sparkle 1.5s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .back-home {
+                font-size: 1rem;
+                padding: 10px 25px;
+            }
+            .quote {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thank You for Your Sweet Confession!</h1>
+        <p>Your heartfelt words have touched me deeply. I'll cherish them always!</p>
+        <div id="quote" class="quote"></div>
+        <a href="/" class="back-home">Return Home</a>
+    </div>
+
+    <script>
+        const quotes = [
+            "Your confession made my heart skip a beat!",
+            "Your words are sweeter than chocolate!",
+            "You've painted my world with colors of love!",
+            "Your confession is the best gift I could ask for!",
+            "You've made my heart flutter like butterflies!",
+            "Your words are music to my ears!",
+            "You've lit up my world with your confession!",
+            "Your love is like a beautiful dream come true!",
+            "You've stolen my heart with your sweet words!",
+            "Your confession is the most beautiful melody!",
+            "You make every moment feel like Valentine's Day!",
+            "I never thought I'd find someone like you!",
+            "Your confession has made this the best day ever!",
+            "I feel like I'm walking on air because of you!",
+            "You've turned my world upside down in the best way!",
+            "Your words are like roses to my heart!",
+            "I'm so grateful for your love and your confession!",
+            "Your confession is the light that brightens my day!",
+            "With you, every day feels like a celebration of love!",
+            "You’ve made my heart bloom like a beautiful flower!",
+            "Your love is the sweetest gift I've ever received!",
+            "I feel like I'm floating on cloud nine because of you!",
+            "You've made my heart race in the best possible way!",
+            "Your confession is like a fairy tale come true!",
+            "Every word you say makes me love you even more!",
+            "You’ve captured my heart in a way no one else could!",
+            "I can't stop smiling because of your sweet confession!",
+            "Your words are like sunshine on a cloudy day!",
+            "Your love is my favorite love story!",
+            "I never thought someone could make me feel this way!",
+            "Thank you for opening your heart to me!",
+            "Your confession is the greatest treasure I could ever find!",
+            "Every moment with you feels like magic!",
+            "You've filled my heart with so much joy!",
+            "You're the reason my heart beats a little faster!",
+            "Your love feels like a warm embrace on a cold day!",
+            "You've made my life more beautiful with your confession!",
+            "I never knew love until I heard your words!",
+            "Your confession is the sweetest melody in my life!",
+            "You make my heart smile every time you speak!",
+            "You're the reason I believe in love at first sight!",
+            "I feel like the luckiest person in the world because of you!",
+            "Your confession is the start of a beautiful story!",
+            "I never thought I'd be so lucky to hear those words from you!",
+            "You've made my heart skip a beat in the best way possible!",
+            "Your confession is like a dream I never want to wake up from!",
+            "I can't believe how lucky I am to have you in my life!",
+            "Your love fills my heart with warmth and happiness!",
+            "Your confession made my heart feel like it was soaring!",
+            "You make my heart race with every word you say!",
+            "I’m speechless—your confession took my breath away!",
+            "Your words are like magic, making everything better!",
+            "I feel like the happiest person alive because of you!",
+            "Your confession is a beautiful song that my heart will always sing!",
+            "Your love is the greatest gift I've ever received!",
+            "Your words are more precious than anything in this world!",
+            "You’re the one I’ve been waiting for my whole life!",
+            "Your confession is like a love letter come to life!",
+            "You've made all my dreams come true with your words!",
+            "Every time I think of you, my heart skips a beat!",
+            "Your confession is like a spark that set my heart on fire!",
+            "I never thought love could be this beautiful until I met you!",
+            "Your words are the sweetest thing I’ve ever heard!",
+            "You’ve made my heart feel fuller than ever before!",
+            "You’ve given me a reason to believe in love!",
+            "Your confession is my favorite memory!",
+            "I feel like the luckiest person in the world to hear your words!",
+            "Your love is my forever Valentine!",
+            "Your confession is the best surprise I could have ever asked for!",
+            "You've made my heart skip a beat with your words!",
+            "You’ve made every moment with you feel special!",
+            "Your confession is a treasure I will hold forever!",
+            "With you, every day feels like Valentine's Day!",
+            "Your words are a melody my heart will always remember!",
+            "You make my heart soar with happiness!",
+            "You’re the reason my heart beats a little faster!",
+            "Your confession is the beginning of a beautiful love story!",
+            "I can’t believe how lucky I am to have you in my life!",
+            "Your words are like music to my heart!",
+            "You've filled my life with love and joy!",
+            "Your confession is a beautiful beginning to our love story!",
+            "You’ve stolen my heart in the most magical way!",
+            "Thank you for your beautiful confession—it means the world to me!",
+            "Your words are more precious than gold to me!",
+            "I can't imagine my life without you and your love!",
+            "Your confession is the sweetest song my heart has ever heard!",
+            "You’ve made me believe in love all over again!",
+            "Your love is like a warm hug on a cold day!",
+            "Your confession has made my heart bloom like a flower!",
+            "With every word you say, I fall even more in love with you!",
+            "Your love fills me with joy I never thought possible!",
+            "Your confession is the light that brightens up my world!",
+            "I can't stop smiling because of your sweet confession!",
+            "You’ve turned my world into a beautiful place with your words!",
+            "Your confession has made me the happiest person alive!",
+            "I will cherish your confession forever—it’s my greatest gift!",
+            "Your words are the most beautiful sound I've ever heard!",
+            "You've made my heart feel like it's dancing with joy!",
+            "Your love is the most beautiful thing in my life!",
+            "Your confession has made my heart feel complete!",
+            "Every word you speak makes me fall deeper in love with you!",
+            "Your confession is a dream I never want to wake up from!",
+            "You've filled my heart with love and happiness beyond measure!",
+            "Your confession has changed my life in the most beautiful way!",
+            "With you, every moment is filled with love and joy!",
+            "You’ve given me a reason to smile every single day!",
+            "Your words are like a beautiful melody I will always cherish!",
+            "Your love is the best thing that's ever happened to me!",
+            "You've made my life so much brighter with your confession!",
+            "Your words are a song that plays in my heart every day!",
+            "You are the best thing in my life, and your confession proves it!",
+            "Your confession is the sweetest thing I've ever heard!",
+            "Your love has filled my heart with so much joy and happiness!",
+            "Every time I hear your confession, my heart races with excitement!",
+            "You make my heart skip a beat every time you speak!",
+            "Your confession has made me believe in love all over again!",
+            "You've made my world a better place with your love!",
+            "I can't thank you enough for your beautiful confession!",
+            "Your confession is the most precious gift I've ever received!",
+            "Your love is the greatest gift I could ever ask for!",
+            "With you, life is a never-ending Valentine's Day!",
+            "Your confession is the sweetest sound my heart has ever heard!",
+            "Every word you speak fills my heart with love and warmth!",
+            "Your confession is the beginning of our forever together!",
+            "You’ve made me feel loved in ways I never thought possible!",
+            "Your love is my favorite song, and I want to play it forever!"
+        ];
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDuration = `${Math.random() * 2 + 3}s`;
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = `${Math.random() * 100}%`;
+            sparkle.style.top = `${Math.random() * 100}%`;
+            document.querySelector('.container').appendChild(sparkle);
+
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1500);
+        }
+
+        function changeQuote() {
+            const quoteElement = document.getElementById('quote');
+            quoteElement.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+            quoteElement.style.animation = 'none';
+            quoteElement.offsetHeight; // Trigger reflow
+            quoteElement.style.animation = null;
+        }
+
+        setInterval(createHeart, 300);
+        setInterval(createSparkle, 200);
+        setInterval(changeQuote, 5000);
+        changeQuote(); // Initial quote
+    </script>
+</body>
+</html>

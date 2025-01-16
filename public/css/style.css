@@ -1,0 +1,189 @@
+/* General Styles */
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #000;
+  color: #00ff00;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;  /* Enable horizontal scrolling */
+  font-size: 18px;
+  white-space: nowrap; /* Prevent wrapping of elements */
+}
+
+html, body {
+  width: 100%;
+  overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+header {
+  background-color: #111;
+  padding: 20px 0;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.menu-icon {
+  display: none; /* Hidden by default, will appear on small screens */
+  font-size: 30px;
+  color: #00ff00;
+  cursor: pointer;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  white-space: nowrap; /* Prevent menu items from wrapping */
+}
+
+nav a {
+  color: #00ff00;
+  margin: 0 20px;
+  text-decoration: none;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ff007f;
+}
+
+nav.hidden {
+  display: none; /* Hide the navigation menu by default */
+}
+
+nav.visible {
+  display: flex; /* Show the menu when toggled */
+  flex-direction: column;
+  align-items: center;
+  background-color: #111;
+  position: absolute;
+  top: 70px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+nav a {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+/* Button Styles */
+.btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #00ff00;
+  color: #000;
+  border: 2px solid #00ff00;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: transparent;
+  color: #00ff00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 255, 0, 0.5);
+}
+
+/* Glowing Animation for Text */
+@keyframes glowing {
+  0% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00; }
+  50% { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; }
+  100% { text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00; }
+}
+
+h1 {
+  animation: glowing 1.5s ease-in-out infinite;
+}
+
+/* Matrix Code Animation */
+@keyframes matrix {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+footer p {
+  animation: matrix 5s linear infinite;
+}
+
+/* Social Media Links */
+.social-links {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Makes the image circular */
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Textarea Styles */
+textarea {
+  width: 100%;
+  height: 200px;
+  padding: 15px;
+  background-color: #006400; /* Green background */
+  color: #fff; /* White text */
+  border: 2px solid #00ff00; /* Green border */
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: 'Courier New', Courier, monospace;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+textarea:focus {
+  background-color: #228B22; /* Slightly lighter green on focus */
+  outline: none; /* Removes the default focus outline */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block; /* Show the menu icon on small screens */
+    margin-left: 20px;
+  }
+
+  main {
+    padding: 40px 10px;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  nav {
+    flex-direction: column;
+  }
+
+  nav a {
+    margin: 10px 0;
+    font-size: 18px;
+  }
+
+  textarea {
+    height: 150px; /* Adjust textarea height on small screens */
+  }
+}
