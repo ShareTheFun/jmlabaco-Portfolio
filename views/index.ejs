@@ -5,8 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/style.css">
   <title>Home</title>
+  <style>
+    #matrix-intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    #matrix-text {
+      position: absolute;
+      font-size: 48px;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+  </style>
 </head>
 <body>
+  <div id="matrix-intro"></div>
   <header>
     <!-- Hamburger Menu Icon -->
     <div class="menu-icon" id="menuIcon">
@@ -26,11 +52,136 @@
     <a href="/about" class="btn">Learn More</a>
     <a href="/confession" class="btn secondary">Confess to Me?</a>
     <a href="/testing" class="btn">Testing</a>
+
+    <!-- New features -->
+    <div id="userInfo" class="user-info">
+      <h2>Your Device Info</h2>
+      <p>Battery Level: <span id="batteryLevel">Checking...</span></p>
+      <p>IP Address: <span id="ipAddress">Fetching...</span></p>
+      <p>Device: <span id="deviceInfo">Detecting...</span></p>
+      <p>Browser: <span id="browserInfo">Identifying...</span></p>
+      <p>Screen Resolution: <span id="screenResolution">Measuring...</span></p>
+      <p>Connection Type: <span id="connectionType">Analyzing...</span></p>
+    </div>
   </main>
   <footer>
     <p>© 2025 Mart John Labaco</p>
   </footer>
-  
+
   <script src="/js/menu.js"></script>
+  <script>
+    // Matrix Intro
+    const matrixIntro = document.getElementById('matrix-intro');
+    const matrixText = document.createElement('div');
+    matrixText.id = 'matrix-text';
+    matrixIntro.appendChild(matrixText);
+
+    function createMatrixEffect() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      matrixIntro.appendChild(canvas);
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const columns = Math.floor(canvas.width / 20);
+      const drops = new Array(columns).fill(1);
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#00ff00';
+        ctx.font = '15px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = String.fromCharCode(Math.random() * 128);
+          ctx.fillText(text, i * 20, drops[i] * 20);
+
+          if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      const matrixInterval = setInterval(draw, 33);
+
+      setTimeout(() => {
+        clearInterval(matrixInterval);
+        canvas.remove();
+        revealName();
+      }, 5000);
+    }
+
+    function revealName() {
+      const fullName = "MART JOHN LABACO";
+      const symbols = "+#-$#+@-#&$+$&+#-#";
+      let currentText = symbols.repeat(Math.ceil(fullName.length / symbols.length)).slice(0, fullName.length);
+      matrixText.textContent = currentText;
+      matrixText.style.opacity = '1';
+
+      let revealedChars = 0;
+      const revealInterval = setInterval(() => {
+        if (revealedChars < fullName.length) {
+          currentText = currentText.slice(0, revealedChars) + 
+                        fullName[revealedChars] + 
+                        currentText.slice(revealedChars + 1);
+          matrixText.textContent = currentText;
+          revealedChars++;
+        } else {
+          clearInterval(revealInterval);
+          setTimeout(() => {
+            matrixIntro.style.opacity = '0';
+            setTimeout(() => {
+              matrixIntro.remove();
+            }, 1000);
+          }, 2000);
+        }
+      }, 100);
+    }
+
+    createMatrixEffect();
+
+    // Battery Level
+    if ('getBattery' in navigator) {
+      navigator.getBattery().then(function(battery) {
+        function updateBatteryStatus() {
+          document.getElementById('batteryLevel').textContent = `${(battery.level * 100).toFixed(2)}%`;
+        }
+        battery.addEventListener('levelchange', updateBatteryStatus);
+        updateBatteryStatus();
+      });
+    } else {
+      document.getElementById('batteryLevel').textContent = 'Not available';
+    }
+
+    // IP Address
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('ipAddress').textContent = data.ip;
+      })
+      .catch(() => {
+        document.getElementById('ipAddress').textContent = 'Unable to fetch';
+      });
+
+    // Device Info
+    document.getElementById('deviceInfo').textContent = navigator.platform || 'Unknown';
+
+    // Browser Info
+    document.getElementById('browserInfo').textContent = navigator.userAgent;
+
+    // Screen Resolution
+    document.getElementById('screenResolution').textContent = `${window.screen.width}x${window.screen.height}`;
+
+    // Connection Type
+    if ('connection' in navigator) {
+      document.getElementById('connectionType').textContent = navigator.connection.effectiveType || 'Unknown';
+    } else {
+      document.getElementById('connectionType').textContent = 'Not available';
+    }
+  </script>
 </body>
 </html>
+
