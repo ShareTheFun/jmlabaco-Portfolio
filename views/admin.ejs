@@ -127,46 +127,145 @@
       0% { transform: scale(0); }
       100% { transform: scale(1); }
     }
+
+    /* Password protection styles */
+    #passwordProtection {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff0f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    #passwordForm {
+      background-color: #ff69b4;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    #passwordForm input {
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #ff1493;
+      border-radius: 5px;
+    }
+
+    #passwordForm button {
+      background-color: #ff1493;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #ff1493;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Admin Dashboard</h1>
-  </header>
-
-  <div class="confessions-list">
-    <% if (confessions && confessions.length > 0) { %>
-      <% confessions.forEach((confession, index) => { %>
-        <div class="confession">
-          <p><strong>MY DAY</strong></p>
-          <p><strong>Confession <%= index + 1 %>:</strong></p>
-          <p><%= confession.data.confession %></p> <!-- Confession text here -->
-          <p><small><%= confession.data.timestamp %></small></p>
-
-          <form action="/admin/delete-confession" method="POST" id="delete-form-<%= index %>">
-            <input type="hidden" name="confessionFile" value="<%= confession.fileName %>">
-            <button type="button" onclick="confirmDelete(<%= index %>)">Delete</button>
-          </form>
-
-          <button onclick="openMayDay(<%= index %>)">May Day</button>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <p>No confessions found.</p>
-    <% } %>
+  <div id="passwordProtection">
+    <form id="passwordForm">
+      <input type="password" id="passwordInput" placeholder="Enter password">
+      <button type="submit">Submit</button>
+    </form>
   </div>
 
-  <!-- Modal for May Day -->
-  <div id="mayDayModal" class="modal">
-    <div class="modal-content">
-      <h2>MY DAY</h2>
-      <p><strong>Confession <span id="confessionIndex"></span></strong></p>
-      <div class="confession-box" id="confessionBox"></div>
-      <button class="close-btn" onclick="closeMayDay()">X</button>
+  <div id="content" style="display: none;">
+    <header>
+      <h1>Admin Dashboard</h1>
+    </header>
+
+    <button id="changePasswordBtn" style="margin: 20px; background-color: #ff1493; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Change Password</button>
+
+    <div class="confessions-list">
+      <% if (confessions && confessions.length > 0) { %>
+        <% confessions.forEach((confession, index) => { %>
+          <div class="confession">
+            <p><strong>MY DAY</strong></p>
+            <p><strong>Confession <%= index + 1 %>:</strong></p>
+            <p><%= confession.data.confession %></p>
+            <p><small><%= confession.data.timestamp %></small></p>
+
+            <form action="/admin/delete-confession" method="POST" id="delete-form-<%= index %>">
+              <input type="hidden" name="confessionFile" value="<%= confession.fileName %>">
+              <button type="button" onclick="confirmDelete(<%= index %>)">Delete</button>
+            </form>
+
+            <button onclick="openMayDay(<%= index %>)">May Day</button>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <p>No confessions found.</p>
+      <% } %>
+    </div>
+
+    <!-- Modal for May Day -->
+    <div id="mayDayModal" class="modal">
+      <div class="modal-content">
+        <h2>MY❤️DAY</h2>
+        <p><strong>Confession <span id="confessionIndex"></span></strong></p>
+        <div class="confession-box" id="confessionBox"></div>
+        <button class="close-btn" onclick="closeMayDay()">X</button>
+      </div>
+    </div>
+
+    <!-- Modal for Change Password -->
+    <div id="changePasswordModal" class="modal">
+      <div class="modal-content">
+        <h2>Change Password</h2>
+        <div id="oldPasswordForm">
+          <input type="password" id="oldPasswordInput" placeholder="Enter old password">
+          <button onclick="verifyOldPassword()">Submit</button>
+        </div>
+        <div id="newPasswordForm" style="display: none;">
+          <input type="password" id="newPasswordInput" placeholder="Enter new password">
+          <button onclick="changePassword()">Change Password</button>
+        </div>
+        <div id="loadingSpinner" class="spinner" style="display: none;"></div>
+        <p id="passwordMessage"></p>
+        <button class="close-btn" onclick="closeChangePasswordModal()">X</button>
+      </div>
     </div>
   </div>
 
   <script>
+    // Password protection script
+    const correctPassword = "Jmlabaco200805";
+    const passwordForm = document.getElementById("passwordForm");
+    const passwordProtection = document.getElementById("passwordProtection");
+    const content = document.getElementById("content");
+
+    passwordForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const enteredPassword = document.getElementById("passwordInput").value;
+      if (enteredPassword === correctPassword) {
+        passwordProtection.style.display = "none";
+        content.style.display = "block";
+      } else {
+        alert("Incorrect password. Please try again.");
+      }
+    });
+
     function confirmDelete(index) {
       const confirmDelete = confirm("Are you sure you want to delete this confession?");
       if (confirmDelete) {
@@ -175,14 +274,64 @@
     }
 
     function openMayDay(index) {
-      const confessionText = document.querySelectorAll('.confession')[index].querySelector('p').textContent;
-      document.getElementById("confessionIndex").textContent = index + 1; // Show Confession number
-      document.getElementById("confessionBox").textContent = "• " + confessionText; // Display confession text
+      const confession = <%- JSON.stringify(confessions) %>[index];
+      document.getElementById("confessionIndex").textContent = index + 1;
+      document.getElementById("confessionBox").innerHTML = `• ${confession.data.confession}`;
       document.getElementById("mayDayModal").style.display = "flex";
     }
 
     function closeMayDay() {
       document.getElementById("mayDayModal").style.display = "none";
+    }
+
+    // Change Password functionality
+    const changePasswordBtn = document.getElementById("changePasswordBtn");
+    const changePasswordModal = document.getElementById("changePasswordModal");
+    const oldPasswordForm = document.getElementById("oldPasswordForm");
+    const newPasswordForm = document.getElementById("newPasswordForm");
+    const loadingSpinner = document.getElementById("loadingSpinner");
+    const passwordMessage = document.getElementById("passwordMessage");
+
+    changePasswordBtn.addEventListener("click", function() {
+      changePasswordModal.style.display = "flex";
+    });
+
+    function closeChangePasswordModal() {
+      changePasswordModal.style.display = "none";
+      oldPasswordForm.style.display = "block";
+      newPasswordForm.style.display = "none";
+      passwordMessage.textContent = "";
+    }
+
+    function verifyOldPassword() {
+      const oldPassword = document.getElementById("oldPasswordInput").value;
+      loadingSpinner.style.display = "block";
+      oldPasswordForm.style.display = "none";
+
+      // Simulating API call to verify old password
+      setTimeout(() => {
+        loadingSpinner.style.display = "none";
+        if (oldPassword === correctPassword) {
+          newPasswordForm.style.display = "block";
+        } else {
+          passwordMessage.textContent = "Incorrect old password. Please try again.";
+          oldPasswordForm.style.display = "block";
+        }
+      }, 1000);
+    }
+
+    function changePassword() {
+      const newPassword = document.getElementById("newPasswordInput").value;
+      loadingSpinner.style.display = "block";
+      newPasswordForm.style.display = "none";
+
+      // Simulating API call to change password
+      setTimeout(() => {
+        loadingSpinner.style.display = "none";
+        passwordMessage.textContent = "Password changed successfully!";
+        // In a real application, you would update the password on the server here
+        // correctPassword = newPassword; // This is just for demonstration
+      }, 1000);
     }
   </script>
 </body>

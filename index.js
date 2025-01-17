@@ -56,8 +56,8 @@ app.post('/submit-confession', (req, res) => {
   res.render('thanks', { title: 'Thank You' });
 });
 
-app.get('/testing', (req, res) => {
-  res.render('testing', { title: 'Testing' });
+app.get('/MITA', (req, res) => {
+  res.render('MITA', { title: 'MITA' });
 });
 
 app.get('/admin', (req, res) => {
